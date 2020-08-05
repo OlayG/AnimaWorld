@@ -10,7 +10,7 @@ object RetrofitInstance {
 
     private val client by lazy {
         HttpLoggingInterceptor()
-            .apply { level = HttpLoggingInterceptor.Level.BODY }
+            .apply { level = HttpLoggingInterceptor.Level.BASIC }
             .let { OkHttpClient.Builder().addInterceptor(it).build() }
     }
 

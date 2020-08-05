@@ -1,5 +1,6 @@
 package com.example.animaworld.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,7 +15,8 @@ class MainViewModel : ViewModel() {
 
     private val kitsuRepo = KitsuRepo()
     private val _animeResponse = MutableLiveData<AnimeResponse>()
-
+    val getAnimeResponse: LiveData<AnimeResponse>
+        get() = _animeResponse
 
     fun fetchAnime() {
         kitsuRepo.getAnime().enqueue(object : Callback<AnimeResponse> {

@@ -9,13 +9,25 @@ interface KitsuService {
 
     // Using Default Retrofit Threading
     @GET("anime")
-    fun getAnimeRetrofit() : Call<AnimeResponse>
+    fun getAnimeRetrofit(): Call<AnimeResponse>
 
     // Using Coroutines for Threading
     @GET("anime")
-    suspend fun getAnimeRetrofitCoroutines() : AnimeResponse
+    suspend fun getAnimeRetrofitCoroutines(): AnimeResponse
 
-    //testing with pagination
+    //pagination
     @GET("anime")
-    suspend fun getAnimeRetrofitCoroutines(@Query("page[limit]") limit: Int, @Query("page[offset]") offset: Int) : AnimeResponse
+    suspend fun getAnimeRetrofitCoroutines(
+        @Query("page[limit]") limit: Int,
+        @Query("page[offset]") offset: Int
+    ): AnimeResponse
+
+    //query
+    @GET("anime")
+    suspend fun getAnimeRetrofitCoroutines(
+        @Query("page[limit]") limit: Int,
+        @Query("page[offset]") offset: Int,
+        @Query("filter[text]") q: String
+    ) : AnimeResponse
+
 }

@@ -49,4 +49,11 @@ class MainViewModel : ViewModel() {
         }
     }
 
+    fun fetchAnimeCoroutines(limit: Int, page: Int,q:String){
+        viewModelScope.launch {
+            kitsuRepo.getAnimeCoroutines(limit,page,q).let{animeResponse->
+                _animeResponse.value = animeResponse
+            }
+        }
+    }
 }

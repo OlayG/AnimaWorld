@@ -24,6 +24,11 @@ class AnimeListingAdapter(): RecyclerView.Adapter<AnimeListingAdapter.AnimeListi
         notifyDataSetChanged()
     }
 
+    fun dropAnimes(n: Int){
+        this.animes.drop(n)
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimeListingHolder {
         SnippetAnimeListingBinding.inflate(LayoutInflater.from(parent.context),parent,false).let {
             return AnimeListingHolder(it)

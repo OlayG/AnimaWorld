@@ -13,6 +13,11 @@ class KitsuRepo {
         val offset = limit * page
         return RetrofitInstance.kitsuService.getAnimeRetrofitCoroutines(limit,offset)
     }
+    suspend fun getAnimeCoroutines(limit: Int, page: Int,q:String) : AnimeResponse{
+        val offset = limit * page
+        return RetrofitInstance.kitsuService.getAnimeRetrofitCoroutines(limit,offset,q)
+    }
+
 
     suspend fun getAnimeCoroutines() : AnimeResponse = RetrofitInstance.kitsuService.getAnimeRetrofitCoroutines()
 

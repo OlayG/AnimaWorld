@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity()  {
     private val vm by viewModels<MainViewModel>()
     private lateinit var binding: ActivityMainBinding
     private var page: Int = 0
+    private var limit: Int = 20
     private var isLoading: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity()  {
             setContentView(it.root)
         }
         initRecycler()
-        vm.fetchAnimeCoroutines(20,page)
+        vm.fetchAnimeCoroutines(limit,page)
         initAnimeObserver()
         initSearchBar()
     }
@@ -58,13 +59,19 @@ class MainActivity : AppCompatActivity()  {
                     val visibleItemCount = recyclerView.layoutManager?.childCount ?: 0
                     val totalItemCount = recyclerView.layoutManager?.itemCount
                     val pastVisibleItems = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
-//                    println("visibleItemCount: $visibleItemCount")
-//                    println("totalItemCount: $totalItemCount")
-//                    println("pastVisibleItems: $pastVisibleItems")
+                    var query: String = ""
                     if((visibleItemCount + pastVisibleItems) == totalItemCount && !isLoading){
+                        binding.incTopAppBar.tbTopToolBar.menu.findItem(R.id.mi_top_search).also{searchItem ->
+                            query = (searchItem.actionView as SearchView).query.toString()
+                        }
                         isLoading = true
-                        page = page.inc()
-                        vm.fetchAnimeCoroutines(20,page)
+                        page += 1
+                        if(query != ""){
+                            vm.fetchAnimeCoroutines(limit,page,query)
+                        }else{
+                            vm.fetchAnimeCoroutines(limit,page)
+                        }
+
                     }
                 }
             })
@@ -74,11 +81,12 @@ class MainActivity : AppCompatActivity()  {
     private fun initAnimeObserver(){
         vm.getAnimeResponse.observe(this, Observer { AnimeResponse ->
             binding.rvAnimeListings.apply {
-                if(page == 0 ){
+                isLoading = if(page == 0 ){
                     (this.adapter as AnimeListingAdapter).loadAnimes(AnimeResponse.data as MutableList<Anime>)
+                    false
                 }else{
                     (this.adapter as AnimeListingAdapter).addAnimes(AnimeResponse.data as MutableList<Anime>)
-                    isLoading = false
+                    false
                 }
 
             }
@@ -89,20 +97,23 @@ class MainActivity : AppCompatActivity()  {
         binding.incTopAppBar.tbTopToolBar.menu.findItem(R.id.mi_top_search).also{ searchItem ->
             (searchItem.actionView as SearchView).let{searchView->
                 searchView.setOnCloseListener {
-                    println("query close")
-//                    TODO("Not sure if this needs to be a thing")
+                    isLoading = true
+                    page = 0
+                    vm.fetchAnimeCoroutines(limit,page)
                     return@setOnCloseListener false
                 }
 
                 searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
                     override fun onQueryTextSubmit(query: String?): Boolean {
-                        println("query submit")
-//                        TODO("Needs to execute the search")
+                        if (query != null) {
+                            isLoading = true
+                            page = 0
+                            vm.fetchAnimeCoroutines(limit,page,query)
+                        }
                         return false
                     }
 
                     override fun onQueryTextChange(newText: String?): Boolean {
-                        println("query changed")
 //                        TODO("Needs to bring up suggestions of things that can be searched")
                         return true
                     }

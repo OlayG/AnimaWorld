@@ -4,4 +4,5 @@
     <string name="open_search_menu">Open Search Menu</string>
     <string name="show_more_menu">Show More Menu</string>
     <string name="more">more</string>
+    <string name="dark_mode">Dark Mode</string>
 </resources>

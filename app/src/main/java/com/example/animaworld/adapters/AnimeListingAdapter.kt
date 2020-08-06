@@ -19,6 +19,11 @@ class AnimeListingAdapter(): RecyclerView.Adapter<AnimeListingAdapter.AnimeListi
         notifyDataSetChanged()
     }
 
+    fun addAnimes(animes: MutableList<Anime>){
+        this.animes.addAll(animes)
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimeListingHolder {
         SnippetAnimeListingBinding.inflate(LayoutInflater.from(parent.context),parent,false).let {
             return AnimeListingHolder(it)

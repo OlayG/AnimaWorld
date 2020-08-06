@@ -3,6 +3,7 @@ package com.example.animaworld.repository.remote
 import com.example.animaworld.model.AnimeResponse
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface KitsuService {
 
@@ -13,4 +14,8 @@ interface KitsuService {
     // Using Coroutines for Threading
     @GET("anime")
     suspend fun getAnimeRetrofitCoroutines() : AnimeResponse
+
+    //testing with pagination
+    @GET("anime")
+    suspend fun getAnimeRetrofitCoroutines(@Query("page[limit]") limit: Int, @Query("page[offset]") offset: Int) : AnimeResponse
 }

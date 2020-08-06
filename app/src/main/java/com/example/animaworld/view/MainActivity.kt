@@ -10,6 +10,9 @@ import androidx.core.view.MenuItemCompat
 import androidx.core.view.doOnLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.animaworld.R
@@ -18,11 +21,12 @@ import com.example.animaworld.databinding.ActivityMainBinding
 import com.example.animaworld.model.Anime
 import com.example.animaworld.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.snippet_top_app_bar.view.*
+import kotlin.properties.Delegates
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity()  {
     private val vm by viewModels<MainViewModel>()
     private lateinit var binding: ActivityMainBinding
-
+    private var page: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // this is deprecated but cannot find a working work around using insets
@@ -33,7 +37,7 @@ class MainActivity : AppCompatActivity() {
             setContentView(it.root)
         }
         initRecycler()
-        vm.fetchAnime()
+        vm.fetchAnimeCoroutines(20,page)
         initAnimeObserver()
         initSearchBar()
     }
@@ -43,13 +47,38 @@ class MainActivity : AppCompatActivity() {
         binding.rvAnimeListings.let {
             it.layoutManager = GridLayoutManager(this,2)
             it.adapter = AnimeListingAdapter()
+            it.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+//                    println("_____STATE______")
+//                    println("$newState")
+//                    println("_____BOTOTM_____")
+//                    println(recyclerView.bottom)
+                }
+
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    val visibleItemCount = recyclerView.layoutManager?.childCount ?: 0
+                    val totalItemCount = recyclerView.layoutManager?.itemCount
+                    val pastVisibleItems = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                    if((visibleItemCount + pastVisibleItems) == totalItemCount){
+                        page = page.inc()
+                        vm.fetchAnimeCoroutines(20,page)
+                    }
+                }
+            })
         }
     }
 
     private fun initAnimeObserver(){
         vm.getAnimeResponse.observe(this, Observer { AnimeResponse ->
             binding.rvAnimeListings.apply {
-                (this.adapter as AnimeListingAdapter).loadAnimes(AnimeResponse.data as MutableList<Anime>)
+                if(page == 0 ){
+                    (this.adapter as AnimeListingAdapter).loadAnimes(AnimeResponse.data as MutableList<Anime>)
+                }else{
+                    (this.adapter as AnimeListingAdapter).addAnimes(AnimeResponse.data as MutableList<Anime>)
+                }
+
             }
         })
     }
@@ -80,4 +109,5 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 }

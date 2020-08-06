@@ -35,8 +35,16 @@ class MainViewModel : ViewModel() {
 
     fun fetchAnimeCoroutines() {
         viewModelScope.launch {
-            kitsuRepo.getAnimeCoroutines().let { animalResponse ->
-                _animeResponse.value = animalResponse
+            kitsuRepo.getAnimeCoroutines().let { animeResponse ->
+                _animeResponse.value = animeResponse
+            }
+        }
+    }
+
+    fun fetchAnimeCoroutines(limit: Int, page: Int){
+        viewModelScope.launch {
+            kitsuRepo.getAnimeCoroutines(limit,page).let{animeResponse->
+                _animeResponse.value = animeResponse
             }
         }
     }

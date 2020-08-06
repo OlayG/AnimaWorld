@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity()  {
     private val vm by viewModels<MainViewModel>()
     private lateinit var binding: ActivityMainBinding
     private var page: Int = 0
+    private var isLoading: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // this is deprecated but cannot find a working work around using insets
@@ -50,10 +51,6 @@ class MainActivity : AppCompatActivity()  {
             it.addOnScrollListener(object: RecyclerView.OnScrollListener(){
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
-//                    println("_____STATE______")
-//                    println("$newState")
-//                    println("_____BOTOTM_____")
-//                    println(recyclerView.bottom)
                 }
 
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -61,7 +58,11 @@ class MainActivity : AppCompatActivity()  {
                     val visibleItemCount = recyclerView.layoutManager?.childCount ?: 0
                     val totalItemCount = recyclerView.layoutManager?.itemCount
                     val pastVisibleItems = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
-                    if((visibleItemCount + pastVisibleItems) == totalItemCount){
+//                    println("visibleItemCount: $visibleItemCount")
+//                    println("totalItemCount: $totalItemCount")
+//                    println("pastVisibleItems: $pastVisibleItems")
+                    if((visibleItemCount + pastVisibleItems) == totalItemCount && !isLoading){
+                        isLoading = true
                         page = page.inc()
                         vm.fetchAnimeCoroutines(20,page)
                     }
@@ -77,6 +78,7 @@ class MainActivity : AppCompatActivity()  {
                     (this.adapter as AnimeListingAdapter).loadAnimes(AnimeResponse.data as MutableList<Anime>)
                 }else{
                     (this.adapter as AnimeListingAdapter).addAnimes(AnimeResponse.data as MutableList<Anime>)
+                    isLoading = false
                 }
 
             }

@@ -8,7 +8,7 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_anime_pic"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="300dp"
         app:layout_constraintBottom_toTopOf="@id/tv_anime_title"
         app:layout_constraintEnd_toEndOf="parent"

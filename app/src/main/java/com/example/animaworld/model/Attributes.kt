@@ -36,7 +36,7 @@ data class Attributes(
     val coverImage: Image? = null,
     val episodeCount: Int? = null,
     val episodeLength: Int? = null,
-    val totalLength: Int = 0,
+    val totalLength: Int? = null,
     val youtubeVideoId: String? = null,
     val showType: ShowType? = null,
     val nsfw: Boolean = false

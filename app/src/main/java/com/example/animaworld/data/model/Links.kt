@@ -1,4 +1,4 @@
-package com.example.animaworld.model
+package com.example.animaworld.data.model
 
 
 import android.os.Parcelable
@@ -8,8 +8,8 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 @JsonClass(generateAdapter = true)
 data class Links(
-    val first: String = "",
-    val prev: String = "",
-    val next: String = "",
-    val last: String = ""
+    val first: String? = null,
+    val prev: String? = null,
+    val next: String? = null,
+    val last: String? = null
 ) : Parcelable

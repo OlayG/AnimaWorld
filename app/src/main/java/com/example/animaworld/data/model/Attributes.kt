@@ -1,4 +1,4 @@
-package com.example.animaworld.model
+package com.example.animaworld.data.model
 
 
 import android.os.Parcelable
@@ -23,7 +23,7 @@ data class Attributes(
     val userCount: Int = 0,
     val favoritesCount: Int = 0,
     val startDate: String = "",
-    val endDate: String = "",
+    val endDate: String? = null,
     val nextRelease: @RawValue Any? = null,
     val popularityRank: Int = 0,
     val ratingRank: Int = 0,
@@ -34,10 +34,10 @@ data class Attributes(
     val tba: String? = null,
     val posterImage: Image = Image(),
     val coverImage: Image? = null,
-    val episodeCount: Int = 0,
+    val episodeCount: Int? = null,
     val episodeLength: Int? = null,
     val totalLength: Int = 0,
-    val youtubeVideoId: String = "",
+    val youtubeVideoId: String? = null,
     val showType: ShowType? = null,
     val nsfw: Boolean = false
 ) : Parcelable {

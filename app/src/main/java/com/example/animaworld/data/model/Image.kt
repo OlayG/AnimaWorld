@@ -1,4 +1,4 @@
-package com.example.animaworld.model
+package com.example.animaworld.data.model
 
 
 import android.os.Parcelable
@@ -8,11 +8,11 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 @JsonClass(generateAdapter = true)
 data class Image(
-    val tiny: String = "",
-    val small: String = "",
-    val medium: String = "",
-    val large: String = "",
-    val original: String = "",
+    val tiny: String? = null,
+    val small: String? = null,
+    val medium: String? = null,
+    val large: String? = null,
+    val original: String? = null,
     val meta: Meta = Meta()
 ) : Parcelable {
 

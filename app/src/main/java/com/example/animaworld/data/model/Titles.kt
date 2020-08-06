@@ -1,4 +1,4 @@
-package com.example.animaworld.model
+package com.example.animaworld.data.model
 
 
 import android.os.Parcelable
@@ -9,11 +9,11 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 @JsonClass(generateAdapter = true)
 data class Titles(
-    val en: String = "",
+    val en: String? = null,
     @Json(name = "en_jp")
-    val enJp: String = "",
+    val enJp: String? = null,
     @Json(name = "ja_jp")
-    val jaJp: String = "",
+    val jaJp: String? = null,
     @Json(name = "en_us")
-    val enUs: String = ""
+    val enUs: String? = null
 ) : Parcelable

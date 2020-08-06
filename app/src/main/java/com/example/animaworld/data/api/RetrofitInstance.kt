@@ -1,4 +1,4 @@
-package com.example.animaworld.repository.remote
+package com.example.animaworld.data.api
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
@@ -23,5 +23,6 @@ object RetrofitInstance {
             .build()
     }
 
-    val kitsuService: KitsuService by lazy { retrofit.create(KitsuService::class.java) }
+    val kitsuService: KitsuService by lazy { retrofit.create(
+        KitsuService::class.java) }
 }

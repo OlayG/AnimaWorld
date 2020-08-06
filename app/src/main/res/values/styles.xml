@@ -1,2 +1,8 @@
 <resources>
+
+    <style name="Widget.MyApp.Loader" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_margin">5dp</item>
+    </style>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.animaworld.model
+package com.example.animaworld.data.model
 
 
 import android.os.Parcelable

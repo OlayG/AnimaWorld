@@ -1,8 +1,10 @@
-package com.example.animaworld.model
+package com.example.animaworld.data.model
 
 
 import android.os.Parcelable
+import com.example.animaworld.utils.TYPE
 import com.squareup.moshi.JsonClass
+import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -14,6 +16,9 @@ data class Anime(
     val attributes: Attributes = Attributes(),
     val relationships: Relationships = Relationships()
 ) : Parcelable {
+
+    @IgnoredOnParcel
+    var viewType = TYPE.ITEM
 
     @Parcelize
     @JsonClass(generateAdapter = true)

@@ -64,6 +64,7 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'jp.wasabeef:glide-transformations:4.1.0'
 
+
     // Kotlin Extensions for Activity
     implementation "androidx.activity:activity-ktx:1.1.0"
 

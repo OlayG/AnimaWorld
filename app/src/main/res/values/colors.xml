@@ -29,7 +29,7 @@
     <color name="surface_dark">#1a1a1a</color> <!--Color surface (dark)-->
     <color name="color_on_primary_dark">@android:color/black</color> <!--Color on primary (dark)-->
     <color name="color_on_secondary_dark">@android:color/black</color> <!--Color on secondary (dark)-->
-    <color name="color_on_background_dark">@android:color/black</color> <!--Color on background (dark)-->
+    <color name="color_on_background_dark">#FFFFFF</color> <!--Color on background (dark)-->
     <color name="color_on_surface_dark">@android:color/white</color> <!--Color on surface (dark)-->
     <color name="color_on_error_dark">@android:color/black</color> <!--Color on error (dark)-->
 </resources>

@@ -3,9 +3,11 @@ package com.example.animaworld.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.request.RequestOptions
 import com.example.animaworld.databinding.SnippetAnimeListingBinding
 import com.example.animaworld.extensions.loadAnimeListing
 import com.example.animaworld.model.Anime
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 class AnimeListingAdapter(): RecyclerView.Adapter<AnimeListingAdapter.AnimeListingHolder>() {
 
@@ -33,7 +35,7 @@ class AnimeListingAdapter(): RecyclerView.Adapter<AnimeListingAdapter.AnimeListi
 
         fun loadAnime(anime: Anime) {
             binding.tvAnimeTitle.text = anime.attributes.titles.en
-            binding.ivAnimePic.loadAnimeListing(anime.attributes.posterImage.large)
+            binding.ivAnimePic.loadAnimeListing(anime.attributes.posterImage.original)
         }
     }
 }

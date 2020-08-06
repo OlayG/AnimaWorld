@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">AnimaWorld</string>
+    <string name="search">search</string>
+    <string name="open_search_menu">Open Search Menu</string>
+    <string name="show_more_menu">Show More Menu</string>
+    <string name="more">more</string>
 </resources>

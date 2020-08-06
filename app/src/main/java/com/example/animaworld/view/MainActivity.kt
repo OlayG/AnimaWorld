@@ -2,9 +2,12 @@ package com.example.animaworld.view
 
 import android.os.Bundle
 import android.view.*
+import android.widget.CompoundButton
+import android.widget.Switch
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuItemCompat
 import androidx.core.view.doOnLayout
@@ -23,7 +26,7 @@ import com.example.animaworld.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.snippet_top_app_bar.view.*
 import kotlin.properties.Delegates
 
-class MainActivity : AppCompatActivity()  {
+class MainActivity : AppCompatActivity() {
     private val vm by viewModels<MainViewModel>()
     private lateinit var binding: ActivityMainBinding
     private var page: Int = 0
@@ -38,18 +41,19 @@ class MainActivity : AppCompatActivity()  {
             binding = it
             setContentView(it.root)
         }
+        initDrawer()
         initRecycler()
-        vm.fetchAnimeCoroutines(limit,page)
+        vm.fetchAnimeCoroutines(limit, page)
         initAnimeObserver()
         initSearchBar()
     }
 
 
-    private fun initRecycler(){
-        binding.rvAnimeListings.let {
-            it.layoutManager = GridLayoutManager(this,2)
+    private fun initRecycler() {
+        binding.incAnimeScrollView.rvAnimeListings.let {
+            it.layoutManager = GridLayoutManager(this, 2)
             it.adapter = AnimeListingAdapter()
-            it.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+            it.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
                 }
@@ -58,18 +62,20 @@ class MainActivity : AppCompatActivity()  {
                     super.onScrolled(recyclerView, dx, dy)
                     val visibleItemCount = recyclerView.layoutManager?.childCount ?: 0
                     val totalItemCount = recyclerView.layoutManager?.itemCount
-                    val pastVisibleItems = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                    val pastVisibleItems =
+                        (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
                     var query: String = ""
-                    if((visibleItemCount + pastVisibleItems) == totalItemCount && !isLoading){
-                        binding.incTopAppBar.tbTopToolBar.menu.findItem(R.id.mi_top_search).also{searchItem ->
-                            query = (searchItem.actionView as SearchView).query.toString()
-                        }
+                    if ((visibleItemCount + pastVisibleItems) == totalItemCount && !isLoading) {
+                        binding.incAnimeScrollView.incTopAppBar.tbTopToolBar.menu.findItem(R.id.mi_top_search)
+                            .also { searchItem ->
+                                query = (searchItem.actionView as SearchView).query.toString()
+                            }
                         isLoading = true
                         page += 1
-                        if(query != ""){
-                            vm.fetchAnimeCoroutines(limit,page,query)
-                        }else{
-                            vm.fetchAnimeCoroutines(limit,page)
+                        if (query != "") {
+                            vm.fetchAnimeCoroutines(limit, page, query)
+                        } else {
+                            vm.fetchAnimeCoroutines(limit, page)
                         }
 
                     }
@@ -78,13 +84,13 @@ class MainActivity : AppCompatActivity()  {
         }
     }
 
-    private fun initAnimeObserver(){
+    private fun initAnimeObserver() {
         vm.getAnimeResponse.observe(this, Observer { AnimeResponse ->
-            binding.rvAnimeListings.apply {
-                isLoading = if(page == 0 ){
+            binding.incAnimeScrollView.rvAnimeListings.apply {
+                isLoading = if (page == 0) {
                     (this.adapter as AnimeListingAdapter).loadAnimes(AnimeResponse.data as MutableList<Anime>)
                     false
-                }else{
+                } else {
                     (this.adapter as AnimeListingAdapter).addAnimes(AnimeResponse.data as MutableList<Anime>)
                     false
                 }
@@ -94,33 +100,52 @@ class MainActivity : AppCompatActivity()  {
     }
 
     private fun initSearchBar() {
-        binding.incTopAppBar.tbTopToolBar.menu.findItem(R.id.mi_top_search).also{ searchItem ->
-            (searchItem.actionView as SearchView).let{searchView->
-                searchView.setOnCloseListener {
-                    isLoading = true
-                    page = 0
-                    vm.fetchAnimeCoroutines(limit,page)
-                    return@setOnCloseListener false
-                }
+        binding.incAnimeScrollView.incTopAppBar.tbTopToolBar.menu.findItem(R.id.mi_top_search)
+            .also { searchItem ->
+                (searchItem.actionView as SearchView).let { searchView ->
+                    searchView.setOnCloseListener {
+                        isLoading = true
+                        page = 0
+                        vm.fetchAnimeCoroutines(limit, page)
+                        return@setOnCloseListener false
+                    }
 
-                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-                    override fun onQueryTextSubmit(query: String?): Boolean {
-                        if (query != null) {
-                            isLoading = true
-                            page = 0
-                            vm.fetchAnimeCoroutines(limit,page,query)
+                    searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                        override fun onQueryTextSubmit(query: String?): Boolean {
+                            if (query != null) {
+                                isLoading = true
+                                page = 0
+                                vm.fetchAnimeCoroutines(limit, page, query)
+                            }
+                            return false
                         }
-                        return false
-                    }
 
-                    override fun onQueryTextChange(newText: String?): Boolean {
+                        override fun onQueryTextChange(newText: String?): Boolean {
 //                        TODO("Needs to bring up suggestions of things that can be searched")
-                        return true
-                    }
+                            return true
+                        }
 
-                })
+                    })
+                }
             }
+    }
+
+    private fun initDrawer(){
+        binding.incAnimeScrollView.incTopAppBar.tbTopToolBar.setNavigationOnClickListener {
+            binding.drawerLayout.openDrawer(binding.navigation)
         }
+
+        binding.navigation.menu.findItem(R.id.tgl_dark_mode).let{menuItem->
+            (menuItem.actionView as Switch).setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { _, b ->
+                if(b){
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                }else{
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                }
+            })
+        }
+//        MenuItem menuItem = binding.navigation.getMenu().findItem(R.id.tgl_dark_mode);
+//        ((Switch) menuItem.getActionView()).setOnCheckedChangeListener(this);
     }
 
 }

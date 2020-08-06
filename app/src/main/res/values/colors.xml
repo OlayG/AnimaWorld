@@ -4,6 +4,8 @@
     <color name="gray">#8a8a8e</color>
     <color name="blue_light">#157efb</color>
     <color name="blue_dark">#1b87fa</color>
+    <color name="goku_orange">#DC4405</color>
+    <color name="dragon_ball_orange">#FB7F01</color>
 
     <!-- LIGHT MODE -->
     <color name="background_light">@android:color/white</color> <!--Color background (light)-->

@@ -34,7 +34,15 @@ class AnimeListingAdapter(): RecyclerView.Adapter<AnimeListingAdapter.AnimeListi
     class AnimeListingHolder(private val binding: SnippetAnimeListingBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun loadAnime(anime: Anime) {
-            binding.tvAnimeTitle.text = anime.attributes.titles.en
+            if(anime.attributes.titles.en==""){
+                if(anime.attributes.titles.enUs == ""){
+                    binding.tvAnimeTitle.text = anime.attributes.titles.enJp
+                }else{
+                    binding.tvAnimeTitle.text = anime.attributes.titles.enUs
+                }
+            }else{
+                binding.tvAnimeTitle.text = anime.attributes.titles.en
+            }
             binding.ivAnimePic.loadAnimeListing(anime.attributes.posterImage.original)
         }
     }

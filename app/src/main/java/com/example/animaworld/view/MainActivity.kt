@@ -1,13 +1,13 @@
 package com.example.animaworld.view
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MenuItem
+import android.view.*
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuItemCompat
+import androidx.core.view.doOnLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -25,6 +25,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // this is deprecated but cannot find a working work around using insets
+
         //inflate activity
         ActivityMainBinding.inflate(LayoutInflater.from(this)).let {
             binding = it
@@ -35,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         initAnimeObserver()
         initSearchBar()
     }
+
 
     private fun initRecycler(){
         binding.rvAnimeListings.let {
@@ -56,20 +59,20 @@ class MainActivity : AppCompatActivity() {
             (searchItem.actionView as SearchView).let{searchView->
                 searchView.setOnCloseListener {
                     println("query close")
-                    TODO("Not sure if this needs to be a thing")
+//                    TODO("Not sure if this needs to be a thing")
                     return@setOnCloseListener false
                 }
 
                 searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
                     override fun onQueryTextSubmit(query: String?): Boolean {
                         println("query submit")
-                        TODO("Needs to execute the search")
+//                        TODO("Needs to execute the search")
                         return false
                     }
 
                     override fun onQueryTextChange(newText: String?): Boolean {
                         println("query changed")
-                        TODO("Needs to bring up suggestions of things that can be searched")
+//                        TODO("Needs to bring up suggestions of things that can be searched")
                         return true
                     }
 

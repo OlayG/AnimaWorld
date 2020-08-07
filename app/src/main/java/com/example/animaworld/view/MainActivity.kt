@@ -4,27 +4,19 @@ import android.os.Bundle
 import android.view.*
 import android.widget.CompoundButton
 import android.widget.Switch
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.MenuItemCompat
-import androidx.core.view.doOnLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import com.example.animaworld.R
 import com.example.animaworld.adapters.AnimeListingAdapter
 import com.example.animaworld.databinding.ActivityMainBinding
 import com.example.animaworld.model.Anime
 import com.example.animaworld.viewmodel.MainViewModel
-import kotlinx.android.synthetic.main.snippet_top_app_bar.view.*
-import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity() {
     private val vm by viewModels<MainViewModel>()
